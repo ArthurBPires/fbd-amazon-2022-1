@@ -1,47 +1,47 @@
 drop_everything_ifexist = """
-drop table if exists Usuario cascade;
-drop table if exists Cliente cascade;
-drop table if exists Vendedor cascade;
-drop table if exists Individual;
-drop table if exists Profissional;
-drop table if exists Entregador cascade;
-drop table if exists Moderador cascade;
-drop table if exists Mensagem;
-drop table if exists Marca cascade;
-drop table if exists Categoria cascade;
+drop table if exists Oferta_Produto;
+drop table if exists Acessa;
+drop table if exists Avaliacao;
+drop table if exists Carrinho;
 drop table if exists Entrega;
 drop table if exists Compra;
+drop table if exists Mensagem;
+drop table if exists Propriedades;
+drop table if exists Produto cascade;
+drop table if exists Cliente cascade;
+drop table if exists Individual;
+drop table if exists Profissional;
+drop table if exists Vendedor cascade;
+drop table if exists Entregador cascade;
+drop table if exists Moderador cascade;
+drop table if exists Usuario cascade;
+drop table if exists Marca cascade;
+drop table if exists Categoria cascade;
 drop table if exists Local;
 drop table if exists Oferta cascade;
-drop table if exists Produto cascade;
-drop table if exists Propriedades;
-drop table if exists Carrinho;
-drop table if exists Acessa;
-drop table if exists Oferta_Produto;
-drop table if exists Avaliacao;
 """
 create_tables= """
 CREATE TABLE Cliente (
-    celular varchar,
-    pin varchar,
+    celular varchar(255),
+    pin varchar(255),
     fk_usuario_id int PRIMARY KEY
 );
 CREATE TABLE Vendedor (
-    nome_da_empresa varchar NOT NULL,
-    celular varchar UNIQUE NOT NULL,
-    cartao_de_credito varchar UNIQUE NOT NULL,
+    nome_da_empresa varchar(255) NOT NULL,
+    celular varchar(255) UNIQUE NOT NULL,
+    cartao_de_credito varchar(255) UNIQUE NOT NULL,
     comissao real NOT NULL,
     cpf_cnpj bigint UNIQUE NOT NULL,
     fk_usuario_id int PRIMARY KEY
 );
 CREATE TABLE Entregador (
-    nome_da_empresa varchar NOT NULL,
-    celular varchar UNIQUE NOT NULL,
+    nome_da_empresa varchar(255) NOT NULL,
+    celular varchar(255) UNIQUE NOT NULL,
     cpf_cnpj bigint UNIQUE NOT NULL,
     fk_usuario_id int PRIMARY KEY
 );
 CREATE TABLE Moderador (
-    celular varchar UNIQUE NOT NULL,
+    celular varchar(255) UNIQUE NOT NULL,
     cpf bigint UNIQUE NOT NULL,
     fk_usuario_id int PRIMARY KEY
 );
@@ -50,11 +50,11 @@ CREATE TABLE Mensagem (
     fk_cliente_id int NOT NULL,
     fk_moderador_id int,
     lado boolean NOT NULL,
-    texto varchar NOT NULL,
+    texto varchar(255) NOT NULL,
     data_hora timestamp NOT NULL,
     denuncia boolean NOT NULL,
     avaliacao boolean,
-    acao_tomada varchar,
+    acao_tomada varchar(255),
     PRIMARY KEY (fk_vendedor_id, fk_cliente_id, data_hora)
 );
 CREATE TABLE Individual (
@@ -66,10 +66,10 @@ CREATE TABLE Profissional (
     fk_vendedor_id int PRIMARY KEY
 );
 CREATE TABLE Marca (
-    nome varchar PRIMARY KEY
+    nome varchar(255) PRIMARY KEY
 );
 CREATE TABLE Categoria (
-    nome varchar PRIMARY KEY
+    nome varchar(255) PRIMARY KEY
 );
 CREATE TABLE Entrega (
     fk_compra_id int NOT NULL,
@@ -81,44 +81,44 @@ CREATE TABLE Compra (
     estado_transacao boolean NOT NULL,
     data_hora timestamp NOT NULL,
     valor real NOT NULL,
-    fk_cliente_id int NOT NULL,
-    fk_produto_id int NOT NULL,
+    fk_cliente_id int,
+    fk_produto_id int,
     quantidade int NOT NULL,
     id int PRIMARY KEY
 );
 CREATE TABLE Local (
-    endereco varchar NOT NULL,
-    nome varchar NOT NULL,
+    endereco varchar(255) NOT NULL,
+    nome varchar(255) NOT NULL,
     id int PRIMARY KEY,
-    descricao varchar NOT NULL
+    descricao varchar(255) NOT NULL
 );
 CREATE TABLE Oferta (
     valor_percent real NOT NULL,
-    descricao varchar NOT NULL,
+    descricao varchar(255) NOT NULL,
 	data_inicio timestamp NOT NULL,
 	data_fim timestamp NOT NULL,
     id int PRIMARY KEY
 );
 CREATE TABLE Produto (
-    descricao varchar NOT NULL,
+    descricao varchar(255) NOT NULL,
     preco real NOT NULL,
-    nome varchar NOT NULL,
+    nome varchar(255) NOT NULL,
     id int PRIMARY KEY,
     quantidade int NOT NULL,
     fk_vendedor_id int NOT NULL,
-    fk_marca_nome varchar,
-    fk_categoria_nome varchar
+    fk_marca_nome varchar(255),
+    fk_categoria_nome varchar(255)
 );
 CREATE TABLE Usuario (
     id int PRIMARY KEY,
-    email varchar UNIQUE NOT NULL,
-    senha varchar NOT NULL,
-    nome_titular varchar NOT NULL,
-    endereco varchar NOT NULL
+    email varchar(255) UNIQUE NOT NULL,
+    senha varchar(255) NOT NULL,
+    nome_titular varchar(255) NOT NULL,
+    endereco varchar(255) NOT NULL
 );
 CREATE TABLE Propriedades (
     fk_produto_id int NOT NULL,
-    propriedades varchar NOT NULL,
+    propriedades varchar(255) NOT NULL,
     PRIMARY KEY (fk_produto_id, propriedades)
 );
 CREATE TABLE Carrinho (
