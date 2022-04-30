@@ -42,11 +42,22 @@ def create_database(connection, query):
         print(f"Error: '{err}'")
 
 def execute_query(connection, query):
+    if query != ';':
+        cursor = connection.cursor(buffered=True)
+        try:
+            cursor.execute(query)
+            connection.commit()
+            print("Query successful")
+        except Error as err:
+            print(f"Error: '{err}'")
+
+def read_query(connection, query):
     cursor = connection.cursor()
+    result = None
     try:
         cursor.execute(query)
-        connection.commit()
-        print("Query successful")
+        result = cursor.fetchall()
+        return result
     except Error as err:
         print(f"Error: '{err}'")
 
@@ -73,11 +84,11 @@ if __name__=='__main__':
     pw = "YOURPASSWORD"
     db = "amazon"
 
-    #connection = create_server_connection("localhost", "root", pw)
-    connection = create_db_connection("localhost", "root", pw, db)
+    connection = create_server_connection("localhost", "root", pw)
+    create_database_query = f"CREATE DATABASE {db}"
+    create_database(connection, create_database_query)
 
-    #create_database_query = f"CREATE DATABASE {db}"
-    #create_database(connection, create_database_query)
+    connection = create_db_connection("localhost", "root", pw, db)
 
     drop_everything_ifexist = filter(None, drop_everything_ifexist.split(';'))
     create_tables = filter(None, create_tables.split(';'))
@@ -96,11 +107,11 @@ if __name__=='__main__':
     for i in insert_everything:
         execute_query(connection,i.strip()+';')
     
-    # execute_query(connection,create_tables)
-    # execute_query(connection,alter_tables)
-    # execute_query(connection,insert_everything)
-    # execute_query(connection,create_view_ComprasUsuario)
-
+    #execute_query(connection,create_tables)
+    #execute_query(connection,alter_tables)
+    #execute_query(connection,insert_everything)
+    execute_query(connection,create_view_ComprasUsuario)
+    results = []
     while(True):
         print_menu()
         option = ''
@@ -110,27 +121,30 @@ if __name__=='__main__':
             print('Wrong input. Please enter a number ...')
         #Check what choice was entered and act accordingly
         if option == 1:
-           execute_query(connection,search_discount_category)
+            results = read_query(connection,search_discount_category)
         elif option == 2:
-           execute_query(connection,search_company_sold)
+            results = read_query(connection,search_company_sold)
         elif option == 3:
-            execute_query(connection,search_product_rating)
+            results = read_query(connection,search_product_rating)
         elif option == 4:
-            execute_query(connection,search_most_access)
+            results = read_query(connection,search_most_access)
         elif option == 5:
-            execute_query(connection,search_buyer_profile)
+            results = read_query(connection,search_buyer_profile)
         elif option == 6:
-            execute_query(connection,search_cart)
+            results = read_query(connection,search_cart)
         elif option == 7:
-            execute_query(connection,search_product_seller)
+            results = read_query(connection,search_product_seller)
         elif option == 8:
-            execute_query(connection,search_product_brand)
+            results = read_query(connection,search_product_brand)
         elif option == 9:
-            execute_query(connection,search_category)
+            results = read_query(connection,search_category)
         elif option == 10:
-            execute_query(connection,search_delivery)
+            results = read_query(connection,search_delivery)
         elif option == 11:
             print('Thanks message before exiting')
             exit()
         else:
             print('Invalid option. Please enter a number between 1 and 11.')
+
+        for result in results:
+            print(result)
