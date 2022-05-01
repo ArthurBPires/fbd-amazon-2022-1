@@ -51,11 +51,11 @@ def execute_query(connection, query):
         except Error as err:
             print(f"Error: '{err}'")
 
-def read_query(connection, query):
+def read_query(connection, query,param):
     cursor = connection.cursor()
     result = None
     try:
-        cursor.execute(query)
+        cursor.execute(query,param)
         result = cursor.fetchall()
         return result
     except Error as err:
@@ -63,7 +63,7 @@ def read_query(connection, query):
 
 menu_options = {
     1: 'A quantidade e valor de produtos com disconto que foram vendidos em cada categoria',
-    2: 'Para todas as empresas, listar aquelas que venderam mais que 10000 em produtos',
+    2: 'Para todas as empresas, listar aquelas que venderam mais que N em produtos',
     3: 'Vendedores com produtos com avaliação acima da média',
     4: 'Produto com maior acesso',
     5: 'Devolve o nome dos usuários que compraram todos os produtos que um outro usuário comprou(e possivelmente outros)',
@@ -119,27 +119,46 @@ if __name__=='__main__':
             option = int(input('Enter your choice: '))
         except:
             print('Wrong input. Please enter a number ...')
+        
+        params = []
         #Check what choice was entered and act accordingly
         if option == 1:
-            results = read_query(connection,search_discount_category)
+            results = read_query(connection,search_discount_category,params)
         elif option == 2:
-            results = read_query(connection,search_company_sold)
+            n = int(input('Enter param: '))
+            params.append(n)
+            results = read_query(connection,search_company_sold,params)
         elif option == 3:
-            results = read_query(connection,search_product_rating)
+            results = read_query(connection,search_product_rating,params)
         elif option == 4:
-            results = read_query(connection,search_most_access)
-        elif option == 5:
-            results = read_query(connection,search_buyer_profile)
+            results = read_query(connection,search_most_access,params)
+        elif option == 5:         
+            n = int(input('Enter param: '))
+            params.append(n)
+            params.append(n)
+            results = read_query(connection,search_buyer_profile,params)
         elif option == 6:
-            results = read_query(connection,search_cart)
+            n = int(input('Enter param: '))
+            params.append(n)
+            results = read_query(connection,search_cart,params)
         elif option == 7:
-            results = read_query(connection,search_product_seller)
+            s = input('Enter param 1: ')
+            n = int(input('Enter param 2: '))
+            params.append(s)
+            params.append(n)
+            results = read_query(connection,search_product_seller,params)
         elif option == 8:
-            results = read_query(connection,search_product_brand)
+            s = input('Enter param: ')
+            params.append(s)
+            results = read_query(connection,search_product_brand,params)
         elif option == 9:
-            results = read_query(connection,search_category)
+            s = input('Enter param: ')
+            params.append(s)
+            results = read_query(connection,search_category,params)
         elif option == 10:
-            results = read_query(connection,search_delivery)
+            n = int(input('Enter param: '))
+            params.append(n)
+            results = read_query(connection,search_delivery,params)
         elif option == 11:
             print('Thanks message before exiting')
             exit()
