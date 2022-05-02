@@ -72,7 +72,7 @@ menu_options = {
     8: 'Fornece o nome de quem comprou o produto de uma marca especifica',
     9: 'Dá informações sobre os produtos de uma categoria',
     10: 'Dá as informações de entrega para uma compra',
-    11: 'Exit',
+    11: 'Exit'
 }
 
 def print_menu():
@@ -116,16 +116,18 @@ if __name__=='__main__':
         print_menu()
         option = ''
         try:
-            option = int(input('Enter your choice: '))
+            option = int(input('Digite sua escolha: '))
         except:
-            print('Wrong input. Please enter a number ...')
+            print('Por favor, digite um número ...')
         
         params = []
         #Check what choice was entered and act accordingly
         if option == 1:
+            n = float(input('Insira a quantidade de disconto: '))
+            params.append(n)
             results = read_query(connection,search_discount_category,params)
         elif option == 2:
-            n = int(input('Enter param: '))
+            n = int(input('Insira a quantidade de produtos: '))
             params.append(n)
             results = read_query(connection,search_company_sold,params)
         elif option == 3:
@@ -133,37 +135,39 @@ if __name__=='__main__':
         elif option == 4:
             results = read_query(connection,search_most_access,params)
         elif option == 5:         
-            n = int(input('Enter param: '))
+            n = int(input('Digite o id do usuário: '))
             params.append(n)
             params.append(n)
             results = read_query(connection,search_buyer_profile,params)
         elif option == 6:
-            n = int(input('Enter param: '))
+            n = int(input('Digite o id do usuário: '))
             params.append(n)
             results = read_query(connection,search_cart,params)
         elif option == 7:
-            s = input('Enter param 1: ')
-            n = int(input('Enter param 2: '))
-            params.append(s)
+            s = input('Digite o id do vendedor: ')
+            n = int(input('Digite o nome do produto: '))
             params.append(n)
+            params.append(s)
             results = read_query(connection,search_product_seller,params)
         elif option == 8:
-            s = input('Enter param: ')
+            s = input('Digite o nome da marca: ')
             params.append(s)
             results = read_query(connection,search_product_brand,params)
         elif option == 9:
-            s = input('Enter param: ')
+            s = input('Digite o nome da categoria: ')
             params.append(s)
             results = read_query(connection,search_category,params)
         elif option == 10:
-            n = int(input('Enter param: '))
+            n = int(input('Digite o id da compra: '))
             params.append(n)
             results = read_query(connection,search_delivery,params)
         elif option == 11:
-            print('Thanks message before exiting')
+            print('Saindo...')
             exit()
         else:
-            print('Invalid option. Please enter a number between 1 and 11.')
+            print('Opção inválida.Por favor, digite um número entre 1 e 11.')
 
         for result in results:
             print(result)
+
+        input('Pressione enter...')

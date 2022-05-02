@@ -7,7 +7,7 @@ from compra join cliente on compra.fk_cliente_id = cliente.fk_usuario_id join us
 search_discount_category = """
 select sum(compra.valor) as valor_total,sum(compra.quantidade) as quantidade_total,categoria.nome as categoria
 from produto JOIN compra ON produto.id = compra.fk_produto_id join oferta_produto ON produto.id = oferta_produto.fk_produto_id JOIN oferta ON oferta_produto.fk_oferta_id = oferta.id JOIN categoria ON produto.fk_categoria_nome = categoria.nome
-where oferta.valor_percent >= 0.05 and estado_transacao = TRUE and compra.data_hora BETWEEN oferta.data_inicio and oferta.data_fim
+where oferta.valor_percent >= %s and estado_transacao = TRUE and compra.data_hora BETWEEN oferta.data_inicio and oferta.data_fim
 GROUP by categoria.nome;
 """
 

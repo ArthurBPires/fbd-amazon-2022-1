@@ -19,6 +19,7 @@ drop table if exists Marca cascade;
 drop table if exists Categoria cascade;
 drop table if exists Local;
 drop table if exists Oferta cascade;
+drop view if exists ComprasUsuario;
 """
 create_tables= """
 CREATE TABLE Cliente (
